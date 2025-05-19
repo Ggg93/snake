@@ -9,18 +9,25 @@ import dev.gl.snake.views.MainWindow;
  * @author gl
  */
 public class ScoreController {
-    private final MainWindow mainWindow;
+    
     private final ScoreModel model;
+    private final MainWindow mainWindow;
+    private SnakeController snakeController;
 
-    public ScoreController(MainWindow mainWindow, int applesRequiredToNextLevel) {
+    public ScoreController(MainWindow mainWindow, 
+            int applesRequiredToNextLevel) {
         
         this.mainWindow = mainWindow;
-        model = new ScoreModel(applesRequiredToNextLevel, mainWindow);
+        model = new ScoreModel(applesRequiredToNextLevel, this);
     }
     
     public void countEatenApple() {
-        model.countEatenApple();
+        Levels achievedLevel = model.countEatenApple();
         updateMainWindowInfoPanel();
+        
+        if (achievedLevel != null) {
+            snakeController.increaseSnakesSpeed(achievedLevel.getSpeed());
+        }
     }
     
     private void updateMainWindowInfoPanel() {
@@ -29,10 +36,17 @@ public class ScoreController {
         
         mainWindow.updateInfoPanel(score, level);
     }
+
+    public void markGameAsWon() {
+        mainWindow.showWinDialog();
+    }
     
     public Levels getCurrentLevel() {
         return model.getCurrentLevel();
     }
-    
+
+    public void setSnakeController(SnakeController snakeController) {
+        this.snakeController = snakeController;
+    }
     
 }

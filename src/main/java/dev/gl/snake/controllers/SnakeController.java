@@ -2,8 +2,8 @@ package dev.gl.snake.controllers;
 
 import dev.gl.snake.enums.MovementDirection;
 import dev.gl.snake.models.SnakeModel;
-import dev.gl.snake.models.SnakeMovementModel;
-import dev.gl.snake.views.BoardPosition;
+import dev.gl.snake.models.SnakeMovementTask;
+import dev.gl.snake.utils.BoardPosition;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +16,11 @@ import java.util.concurrent.Executors;
  */
 public class SnakeController {
     private SnakeModel snakeModel;
+    private SnakeMovementTask movementProcess;
     
+    private BoardController boardController;
+    private ScoreController scoreController;
+
     public void initSnakeModel(int initialLength, BoardPosition startPosition) {
         snakeModel = new SnakeModel(initialLength, startPosition);
     }
@@ -38,10 +42,11 @@ public class SnakeController {
         return snakeModel.getDirection();
     }
     
-    public void startMovement(ScoreController scoreController, BoardController boardController) {
+    public void startMovement() {
         ExecutorService service = Executors.newSingleThreadExecutor();
-        service.execute(new SnakeMovementModel(scoreController, boardController));
-        System.out.println("Snake started!");
+        movementProcess = new SnakeMovementTask(this, 
+                scoreController.getCurrentLevel().getSpeed());
+        service.execute(movementProcess);
     }
 
     public BoardPosition pullUpTail() {
@@ -52,5 +57,21 @@ public class SnakeController {
     public void makeNextStep(BoardPosition head) {
         snakeModel.getLocation().addFirst(head);
     }
+    
+    public void increaseSnakesSpeed(Integer speed) {
+        movementProcess.setSpeed(speed);
+    }
+    
+    public void moveSnakeOnBoard() {
+        boardController.moveSnake();
+    }
 
+    public void setBoardController(BoardController boardController) {
+        this.boardController = boardController;
+    }
+
+    public void setScoreController(ScoreController scoreController) {
+        this.scoreController = scoreController;
+    }
+    
 }

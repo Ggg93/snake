@@ -1,4 +1,4 @@
-package dev.gl.snake.controllers;
+package dev.gl.snake.utils;
 
 import dev.gl.snake.views.MainWindow;
 import java.util.logging.Level;

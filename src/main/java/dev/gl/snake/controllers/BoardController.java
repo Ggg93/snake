@@ -3,7 +3,7 @@ package dev.gl.snake.controllers;
 import dev.gl.snake.enums.MovementDirection;
 import static dev.gl.snake.enums.MovementDirection.EAST;
 import dev.gl.snake.views.BoardCell;
-import dev.gl.snake.views.BoardPosition;
+import dev.gl.snake.utils.BoardPosition;
 import dev.gl.snake.views.MainWindow;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +58,7 @@ public class BoardController {
     }
 
     public void moveSnake() {
-        System.out.println("move!");
+//        System.out.println("move!");
         MovementDirection direction = snakeController.getDirection();
 
         List<BoardPosition> snakePosition = snakeController.getSnakePosition();

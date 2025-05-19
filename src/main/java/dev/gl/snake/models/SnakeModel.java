@@ -1,7 +1,7 @@
 package dev.gl.snake.models;
 
 import dev.gl.snake.enums.MovementDirection;
-import dev.gl.snake.views.BoardPosition;
+import dev.gl.snake.utils.BoardPosition;
 import java.util.ArrayList;
 import java.util.List;
 

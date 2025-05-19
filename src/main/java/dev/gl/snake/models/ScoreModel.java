@@ -1,7 +1,7 @@
 package dev.gl.snake.models;
 
+import dev.gl.snake.controllers.ScoreController;
 import dev.gl.snake.enums.Levels;
-import dev.gl.snake.views.MainWindow;
 
 /**
  *
@@ -9,15 +9,15 @@ import dev.gl.snake.views.MainWindow;
  */
 public class ScoreModel {
 
-    private MainWindow parent;
+    private ScoreController controller;
     private Levels currentLevel;
     private Integer score;
     private Integer eatenApplesOnCurrentLevel;
     private final Integer applesRequiredToNextLevel;
 
-    public ScoreModel(Integer applesRequiredToNextLevel, MainWindow parent) {
+    public ScoreModel(Integer applesRequiredToNextLevel, ScoreController controller) {
         this.applesRequiredToNextLevel = applesRequiredToNextLevel;
-        this.parent = parent;
+        this.controller = controller;
         
         currentLevel = Levels.ONE;
         score = 0;
@@ -25,19 +25,27 @@ public class ScoreModel {
         
     }
 
-    public void countEatenApple() {
+    /**
+     * 
+     * @return new Level if achieved it. Otherwise returns null.
+     */
+    public Levels countEatenApple() {
         score += currentLevel.getRewardPoints();
         eatenApplesOnCurrentLevel++;
 
+        Levels achievedLevel = null;
         if (eatenApplesOnCurrentLevel.equals(applesRequiredToNextLevel)) {
             Levels nextLevel = Levels.getNextLevel(currentLevel);
-            if (nextLevel == null) {
-                parent.showWinDialog();
-            } else {
+            if (nextLevel != null) {
                 currentLevel = nextLevel;
+                achievedLevel = currentLevel;
                 eatenApplesOnCurrentLevel = 0;
+            } else {
+                controller.markGameAsWon();
             }
         }
+        
+        return achievedLevel;
     }
 
     public Levels getCurrentLevel() {

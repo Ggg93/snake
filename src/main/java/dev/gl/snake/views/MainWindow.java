@@ -1,10 +1,10 @@
 package dev.gl.snake.views;
 
 import dev.gl.snake.controllers.BoardController;
-import dev.gl.snake.controllers.ChangingDirectionListener;
+import dev.gl.snake.listeners.KeyboardArrowsListener;
 import dev.gl.snake.controllers.ScoreController;
 import dev.gl.snake.controllers.SnakeController;
-import dev.gl.snake.controllers.StartButtonListener;
+import dev.gl.snake.listeners.StartButtonListener;
 import dev.gl.snake.enums.MainWindowState;
 import dev.gl.snake.enums.MovementDirection;
 import java.awt.event.KeyEvent;
@@ -33,17 +33,21 @@ public class MainWindow extends javax.swing.JFrame {
         mainWindowState = MainWindowState.IDLE;
 
         scoreController = new ScoreController(this, 5);
-        snakeController = new SnakeController();
         boardController = new BoardController(25, this);
+        snakeController = new SnakeController();
         boardController.loadBoard(mainPanel);
         boardController.setSnakeController(snakeController);
         boardController.setScoreController(scoreController);
+        scoreController.setSnakeController(snakeController);
+        snakeController.setBoardController(boardController);
+        snakeController.setScoreController(scoreController);
         boardController.setSnakeOnBoard(3);
         boardController.updateSnakePositionOnBoard();
         boardController.setAppleOnBoard();
 
         initActionListeners();
         createKeyBindings();
+        mainPanel.requestFocus(); // it helps detects key presses
         this.setLocationRelativeTo(null);
     }
 
@@ -101,7 +105,7 @@ public class MainWindow extends javax.swing.JFrame {
         leftInfoPanel.add(scoreLabel);
 
         scoreTextField.setEditable(false);
-        scoreTextField.setText("0");
+        scoreTextField.setText("0    ");
         scoreTextField.setBorder(null);
         scoreTextField.setFocusable(false);
         leftInfoPanel.add(scoreTextField);
@@ -125,7 +129,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initActionListeners() {
-        startButtonListener = new StartButtonListener(boardController, scoreController, snakeController, this);
+        startButtonListener = new StartButtonListener(snakeController, this);
         startButton.addActionListener(startButtonListener);
     }
     
@@ -140,10 +144,10 @@ public class MainWindow extends javax.swing.JFrame {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "west");
         
         actionMap.put("start", startButtonListener);
-        actionMap.put("north", new ChangingDirectionListener(snakeController, MovementDirection.NORTH));
-        actionMap.put("east", new ChangingDirectionListener(snakeController, MovementDirection.EAST));
-        actionMap.put("south", new ChangingDirectionListener(snakeController, MovementDirection.SOUTH));
-        actionMap.put("west", new ChangingDirectionListener(snakeController, MovementDirection.WEST));
+        actionMap.put("north", new KeyboardArrowsListener(snakeController, MovementDirection.NORTH));
+        actionMap.put("east", new KeyboardArrowsListener(snakeController, MovementDirection.EAST));
+        actionMap.put("south", new KeyboardArrowsListener(snakeController, MovementDirection.SOUTH));
+        actionMap.put("west", new KeyboardArrowsListener(snakeController, MovementDirection.WEST));
     }
     
     public void changeMainWindowState(MainWindowState newState) {

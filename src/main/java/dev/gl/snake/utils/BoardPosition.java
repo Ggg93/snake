@@ -1,4 +1,4 @@
-package dev.gl.snake.views;
+package dev.gl.snake.utils;
 
 /**
  *

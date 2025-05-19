@@ -1,5 +1,6 @@
 package dev.gl.snake.views;
 
+import dev.gl.snake.utils.BoardPosition;
 import java.awt.Color;
 
 /**

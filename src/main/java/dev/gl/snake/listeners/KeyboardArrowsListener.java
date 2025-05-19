@@ -1,5 +1,6 @@
-package dev.gl.snake.controllers;
+package dev.gl.snake.listeners;
 
+import dev.gl.snake.controllers.SnakeController;
 import dev.gl.snake.enums.MovementDirection;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -8,12 +9,12 @@ import javax.swing.AbstractAction;
  *
  * @author gl
  */
-public class ChangingDirectionListener extends AbstractAction {
+public class KeyboardArrowsListener extends AbstractAction {
     
     private SnakeController snakeController;
     private MovementDirection direction;
 
-    public ChangingDirectionListener(SnakeController snakeController, MovementDirection direction) {
+    public KeyboardArrowsListener(SnakeController snakeController, MovementDirection direction) {
         super();
         this.snakeController = snakeController;
         this.direction = direction;
