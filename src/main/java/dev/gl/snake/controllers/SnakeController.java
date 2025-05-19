@@ -34,14 +34,23 @@ public class SnakeController {
         snakeModel.setDirection(direction);
     }
     
-    public void startMovement(ScoreController scoreController) {
+    public MovementDirection getDirection() {
+        return snakeModel.getDirection();
+    }
+    
+    public void startMovement(ScoreController scoreController, BoardController boardController) {
         ExecutorService service = Executors.newSingleThreadExecutor();
-        service.execute(new SnakeMovementModel(scoreController, this));
+        service.execute(new SnakeMovementModel(scoreController, boardController));
         System.out.println("Snake started!");
     }
 
-    public void move() {
-        System.out.println("Move!");
+    public BoardPosition pullUpTail() {
+        BoardPosition tail = snakeModel.getLocation().removeLast();
+        return tail;
     }
-    
+
+    public void makeNextStep(BoardPosition head) {
+        snakeModel.getLocation().addFirst(head);
+    }
+
 }

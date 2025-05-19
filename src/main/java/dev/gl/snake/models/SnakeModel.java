@@ -37,5 +37,9 @@ public class SnakeModel {
     public void setDirection(MovementDirection direction) {
         this.direction = direction;
     }
+
+    public MovementDirection getDirection() {
+        return direction;
+    }
     
 }

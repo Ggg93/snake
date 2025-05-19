@@ -8,21 +8,21 @@ import java.util.Map;
  * @author gl
  */
 public enum Levels {
-    ONE(1, 800, 10),
-    TWO(2, 750, 15),
-    THREE(3, 700, 20),
-    FOUR(4, 650, 25),
-    FIVE(5, 600, 30),
-    SIX(6, 550, 35),
-    SEVEN(7, 500, 40),
-    EIGHT(8, 450, 45),
-    NINE(9, 400, 50),
-    TEN(10, 350, 55),
-    ELEVEN(11, 300, 60),
-    TWELVE(12, 350, 65),
-    THIRTEEN(13, 300, 70),
-    FOURTEEN(14, 250, 75),
-    FIFTHEEN(15, 200, 80);
+    ONE(1, 600, 10),
+    TWO(2, 550, 15),
+    THREE(3, 500, 20),
+    FOUR(4, 450, 25),
+    FIVE(5, 400, 30),
+    SIX(6, 350, 35),
+    SEVEN(7, 300, 40),
+    EIGHT(8, 275, 45),
+    NINE(9, 250, 50),
+    TEN(10, 225, 55),
+    ELEVEN(11, 200, 60),
+    TWELVE(12, 175, 65),
+    THIRTEEN(13, 150, 70),
+    FOURTEEN(14, 125, 75),
+    FIFTHEEN(15, 100, 80);
 
     private final Integer level;
     private final int speed; // in ms

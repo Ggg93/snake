@@ -10,6 +10,7 @@ public class BoardCell extends javax.swing.JPanel {
     private static final Color SNAKE_HEAD = new Color(34, 34, 34);
     private static final Color SNAKE_BODY = new Color(99, 99, 99);
     private static final Color APPLE = new Color(255, 8, 0);
+    private static final Color EMPTY = new Color(238, 238, 238);
 
     private final BoardPosition boardPosition;
 
@@ -32,6 +33,10 @@ public class BoardCell extends javax.swing.JPanel {
     
     public void setApple() {
         setBackground(APPLE);
+    }
+    
+    public void setEmpty() {
+        setBackground(EMPTY);
     }
     
     @SuppressWarnings("unchecked")

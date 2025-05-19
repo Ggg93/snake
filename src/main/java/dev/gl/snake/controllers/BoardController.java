@@ -1,7 +1,10 @@
 package dev.gl.snake.controllers;
 
+import dev.gl.snake.enums.MovementDirection;
+import static dev.gl.snake.enums.MovementDirection.EAST;
 import dev.gl.snake.views.BoardCell;
 import dev.gl.snake.views.BoardPosition;
+import dev.gl.snake.views.MainWindow;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +19,18 @@ import javax.swing.JPanel;
  */
 public class BoardController {
 
+    private MainWindow mainWindow;
     private final Map<BoardPosition, BoardCell> cells;
     private Map<Integer, Map<Integer, BoardPosition>> positions; // key - row, value - Map<column, BoardBosition>
     private int squareSideLength;
     private SnakeController snakeController;
+    private ScoreController scoreController;
     private BoardPosition applePosition;
 
-    public BoardController(int squareSideLength, Map<BoardPosition, BoardCell> cells) {
+    public BoardController(int squareSideLength, Map<BoardPosition, BoardCell> cells, MainWindow mainWindow) {
         this.squareSideLength = squareSideLength;
         this.cells = cells;
+        this.mainWindow = mainWindow;
 
         positions = new HashMap<>();
     }
@@ -51,14 +57,111 @@ public class BoardController {
         snakeController.initSnakeModel(snakeLength, getMiddleOfBoard());
     }
 
+    public void moveSnake() {
+        System.out.println("move!");
+        MovementDirection direction = snakeController.getDirection();
+
+        List<BoardPosition> snakePosition = snakeController.getSnakePosition();
+        BoardPosition head = snakePosition.getFirst();
+
+        Integer x = head.getX();
+        Integer y = head.getY();
+        // calc next position
+        switch (direction) {
+            case NORTH:
+                // south edge
+                if (y.equals(squareSideLength - 1)) {
+                    y = 0;
+                    // north edge
+                } else if (y.equals(0)) {
+                    y = squareSideLength - 1;
+                }
+                // regular step:
+                y--;
+                break;
+            case SOUTH:
+                // south edge
+                if (y.equals(squareSideLength - 1)) {
+                    y = 0;
+                    // north edge
+                } else if (y.equals(0)) {
+                    y = squareSideLength - 1;
+                }
+                // regular step:
+                y++;
+                break;
+            case EAST:
+                // east edge
+                if (x.equals(squareSideLength - 1)) {
+                    x = 0;
+                    // west edge
+                } else if (x.equals(0)) {
+                    x = squareSideLength - 1;
+                }
+                // regular step:
+                x++;
+                break;
+            case WEST:
+                // east edge
+                if (x.equals(squareSideLength - 1)) {
+                    x = 0;
+                    // west edge
+                } else if (x.equals(0)) {
+                    x = squareSideLength - 1;
+                }
+                // regular step:
+                x--;
+                break;
+        }
+
+        head = new BoardPosition(x, y);
+
+        // pulls up its tail
+        Boolean isEatingApple = head.equals(applePosition);
+        if (!isEatingApple) {
+            BoardPosition tail = snakeController.pullUpTail();
+
+            // checks if it bites itself
+            boolean doesSnakeBiteItself = snakeController.getOccupiedCells().contains(head);
+            if (doesSnakeBiteItself) {
+                mainWindow.showLosingDialog();
+            }
+
+            // clear cell where the tail was
+            cells.get(tail).setEmpty();
+        }
+
+        // do next step
+        cells.get(snakePosition.getFirst()).setSnakeBody();
+        snakeController.makeNextStep(head);
+        cells.get(head).setSnakeHead();
+
+        if (isEatingApple) {
+            scoreController.countEatenApple();
+            setAppleOnBoard();
+        }
+
+    }
+
     public void setSnakeController(SnakeController snakeController) {
         this.snakeController = snakeController;
     }
-    
+
+    public void setScoreController(ScoreController scoreController) {
+        this.scoreController = scoreController;
+    }
+
     public void setAppleOnBoard() {
+        // if apple position is changes, then clear old cell
+        if (applePosition != null) {
+            BoardCell previousApple = cells.get(applePosition);
+            previousApple.setSnakeHead();
+        }
+
+        // now create new apple and show it on board
         Set<BoardPosition> occupiedCells = snakeController.getOccupiedCells();
         Boolean isCellFree = false;
-        
+
         BoardPosition pos = null;
         RandomGenerator generator = RandomGenerator.getDefault();
         while (!isCellFree) {
@@ -67,11 +170,11 @@ public class BoardController {
             pos = new BoardPosition(x, y);
             isCellFree = !occupiedCells.contains(pos);
         }
-        
+
         applePosition = pos;
         cells.get(pos).setApple();
     }
-    
+
     public void updateSnakePositionOnBoard() {
         List<BoardPosition> snakePosition = snakeController.getSnakePosition();
         for (int i = 0; i < snakePosition.size(); i++) {
@@ -83,7 +186,7 @@ public class BoardController {
                 cell.setSnakeBody();
             }
         }
-        
+
     }
 
     private BoardPosition getMiddleOfBoard() {

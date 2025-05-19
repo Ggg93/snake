@@ -1,5 +1,6 @@
 package dev.gl.snake.models;
 
+import dev.gl.snake.controllers.BoardController;
 import dev.gl.snake.controllers.ScoreController;
 import dev.gl.snake.controllers.SnakeController;
 import java.util.concurrent.TimeUnit;
@@ -11,11 +12,11 @@ import java.util.concurrent.TimeUnit;
 public class SnakeMovementModel implements Runnable {
 
     private ScoreController scoreController;
-    private SnakeController snakeController;
+    private BoardController boardController;
 
-    public SnakeMovementModel(ScoreController scoreController, SnakeController snakeController) {
+    public SnakeMovementModel(ScoreController scoreController, BoardController boardController) {
         this.scoreController = scoreController;
-        this.snakeController = snakeController;
+        this.boardController = boardController;
     }
 
     @Override
@@ -23,7 +24,7 @@ public class SnakeMovementModel implements Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 // moving
-                snakeController.move();
+                boardController.moveSnake();
                 // sleeps before next step
                 TimeUnit.MILLISECONDS.sleep(scoreController.getCurrentLevel().getSpeed());
             }

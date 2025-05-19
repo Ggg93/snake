@@ -35,15 +35,17 @@ public class MainWindow extends javax.swing.JFrame {
         
         mainWindowState = MainWindowState.IDLE;
 
+        scoreController = new ScoreController(this, 5);
         snakeController = new SnakeController();
-        boardController = new BoardController(25, cells);
+        boardController = new BoardController(25, cells, this);
         boardController.loadBoard(mainPanel);
         boardController.setSnakeController(snakeController);
+        boardController.setScoreController(scoreController);
         boardController.setSnakeOnBoard(3);
         boardController.updateSnakePositionOnBoard();
         boardController.setAppleOnBoard();
 
-        scoreController = new ScoreController(this, 5);
+        
 
         initActionListeners();
         createKeyBindings();
@@ -128,7 +130,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initActionListeners() {
-        startButtonListener = new StartButtonListener(scoreController, snakeController, this);
+        startButtonListener = new StartButtonListener(boardController, scoreController, snakeController, this);
         startButton.addActionListener(startButtonListener);
     }
     
