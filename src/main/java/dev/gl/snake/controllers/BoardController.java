@@ -5,7 +5,6 @@ import dev.gl.snake.views.BoardPosition;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.random.RandomGenerator;
@@ -49,8 +48,11 @@ public class BoardController {
     }
 
     public void setSnakeOnBoard(int snakeLength) {
-        snakeController = new SnakeController();
         snakeController.initSnakeModel(snakeLength, getMiddleOfBoard());
+    }
+
+    public void setSnakeController(SnakeController snakeController) {
+        this.snakeController = snakeController;
     }
     
     public void setAppleOnBoard() {

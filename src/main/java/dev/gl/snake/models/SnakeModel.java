@@ -1,5 +1,6 @@
 package dev.gl.snake.models;
 
+import dev.gl.snake.enums.MovementDirection;
 import dev.gl.snake.views.BoardPosition;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 public class SnakeModel {
     
     private List<BoardPosition> location = new ArrayList<>();
+    private MovementDirection direction;
 
     public SnakeModel(int initialLength, BoardPosition startPosition) {
         
@@ -24,10 +26,16 @@ public class SnakeModel {
             
             initialLength--;
         }
+        
+        direction = MovementDirection.NORTH;
     }
 
     public List<BoardPosition> getLocation() {
         return location;
+    }
+
+    public void setDirection(MovementDirection direction) {
+        this.direction = direction;
     }
     
 }

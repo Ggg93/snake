@@ -1,10 +1,20 @@
 package dev.gl.snake.views;
 
 import dev.gl.snake.controllers.BoardController;
+import dev.gl.snake.controllers.ChangingDirectionListener;
 import dev.gl.snake.controllers.ScoreController;
+import dev.gl.snake.controllers.SnakeController;
+import dev.gl.snake.controllers.StartButtonListener;
+import dev.gl.snake.enums.MainWindowState;
+import dev.gl.snake.enums.MovementDirection;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -13,31 +23,43 @@ import javax.swing.JOptionPane;
 public class MainWindow extends javax.swing.JFrame {
 
     private BoardController boardController;
+    private SnakeController snakeController;
     private ScoreController scoreController;
     private Map<BoardPosition, BoardCell> cells = new HashMap<>();
+    
+    private StartButtonListener startButtonListener;
+    private MainWindowState mainWindowState;
 
     public MainWindow() {
         initComponents();
+        
+        mainWindowState = MainWindowState.IDLE;
+
+        snakeController = new SnakeController();
         boardController = new BoardController(25, cells);
         boardController.loadBoard(mainPanel);
+        boardController.setSnakeController(snakeController);
         boardController.setSnakeOnBoard(3);
         boardController.updateSnakePositionOnBoard();
         boardController.setAppleOnBoard();
-        
+
         scoreController = new ScoreController(this, 5);
+
+        initActionListeners();
+        createKeyBindings();
         this.setLocationRelativeTo(null);
     }
-    
+
     public void showWinDialog() {
         JOptionPane.showMessageDialog(this, "Congratulations!" + System.lineSeparator() + "You've won!", "VICTORY!", JOptionPane.OK_OPTION);
         // clear the board and get ready for the next game...
     }
-    
+
     public void showLosingDialog() {
         JOptionPane.showMessageDialog(this, "Sorry..." + System.lineSeparator() + "You've lost =(", "DEFEAT", JOptionPane.OK_OPTION);
         // clear the board and get ready for the next game...
     }
-    
+
     public void updateInfoPanel(String score, String level) {
         scoreTextField.setText(score);
         levelTextField.setText(level);
@@ -105,6 +127,38 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initActionListeners() {
+        startButtonListener = new StartButtonListener(snakeController, this);
+        startButton.addActionListener(startButtonListener);
+    }
+    
+    private void createKeyBindings() {
+        InputMap inputMap = this.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = this.getRootPane().getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "north");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "east");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "south");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "west");
+        
+        actionMap.put("start", startButtonListener);
+        actionMap.put("north", new ChangingDirectionListener(snakeController, MovementDirection.NORTH));
+        actionMap.put("east", new ChangingDirectionListener(snakeController, MovementDirection.EAST));
+        actionMap.put("south", new ChangingDirectionListener(snakeController, MovementDirection.SOUTH));
+        actionMap.put("west", new ChangingDirectionListener(snakeController, MovementDirection.WEST));
+    }
+    
+    public void changeMainWindowState(MainWindowState newState) {
+        switch (newState) {
+            case PLAYING:
+                startButton.setEnabled(false);
+                break;
+            case IDLE:
+                startButton.setEnabled(true);
+                break;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlsPanel;
@@ -118,5 +172,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField scoreTextField;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
+
+    public MainWindowState getMainWindowState() {
+        return mainWindowState;
+    }
 
 }

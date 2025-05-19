@@ -1,5 +1,6 @@
 package dev.gl.snake.controllers;
 
+import dev.gl.snake.enums.MovementDirection;
 import dev.gl.snake.models.SnakeModel;
 import dev.gl.snake.views.BoardPosition;
 import java.util.HashSet;
@@ -23,6 +24,15 @@ public class SnakeController {
     
     public Set<BoardPosition> getOccupiedCells() {
         return new HashSet<>(snakeModel.getLocation());
+    }
+    
+    public void changeSnakeDirection(MovementDirection direction) {
+        System.out.println("new direction: " + direction);
+        snakeModel.setDirection(direction);
+    }
+    
+    public void startMovement() {
+        System.out.println("Snake started!");
     }
     
 }
