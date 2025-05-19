@@ -128,7 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initActionListeners() {
-        startButtonListener = new StartButtonListener(snakeController, this);
+        startButtonListener = new StartButtonListener(scoreController, snakeController, this);
         startButton.addActionListener(startButtonListener);
     }
     
@@ -150,6 +150,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     public void changeMainWindowState(MainWindowState newState) {
+        mainWindowState = newState;
+        
         switch (newState) {
             case PLAYING:
                 startButton.setEnabled(false);

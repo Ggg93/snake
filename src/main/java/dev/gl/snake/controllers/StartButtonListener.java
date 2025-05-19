@@ -11,10 +11,12 @@ import javax.swing.AbstractAction;
  */
 public class StartButtonListener extends AbstractAction {
 
+    private ScoreController scoreController;
     private SnakeController snakeController;
     private MainWindow mainWindow;
 
-    public StartButtonListener(SnakeController snakeController, MainWindow mainWindow) {
+    public StartButtonListener(ScoreController scoreController, SnakeController snakeController, MainWindow mainWindow) {
+        this.scoreController = scoreController;
         this.snakeController = snakeController;
         this.mainWindow = mainWindow;
     }
@@ -22,7 +24,7 @@ public class StartButtonListener extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mainWindow.getMainWindowState() == MainWindowState.IDLE) {
-            snakeController.startMovement();
+            snakeController.startMovement(scoreController);
             mainWindow.changeMainWindowState(MainWindowState.PLAYING);
         }
         

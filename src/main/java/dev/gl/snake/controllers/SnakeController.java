@@ -2,10 +2,13 @@ package dev.gl.snake.controllers;
 
 import dev.gl.snake.enums.MovementDirection;
 import dev.gl.snake.models.SnakeModel;
+import dev.gl.snake.models.SnakeMovementModel;
 import dev.gl.snake.views.BoardPosition;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -31,8 +34,14 @@ public class SnakeController {
         snakeModel.setDirection(direction);
     }
     
-    public void startMovement() {
+    public void startMovement(ScoreController scoreController) {
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        service.execute(new SnakeMovementModel(scoreController, this));
         System.out.println("Snake started!");
+    }
+
+    public void move() {
+        System.out.println("Move!");
     }
     
 }

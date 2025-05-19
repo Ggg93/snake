@@ -1,5 +1,6 @@
 package dev.gl.snake.controllers;
 
+import dev.gl.snake.enums.Levels;
 import dev.gl.snake.models.ScoreModel;
 import dev.gl.snake.views.MainWindow;
 
@@ -27,6 +28,10 @@ public class ScoreController {
         String level = model.getCurrentLevel().getLevel().toString();
         
         mainWindow.updateInfoPanel(score, level);
+    }
+    
+    public Levels getCurrentLevel() {
+        return model.getCurrentLevel();
     }
     
     
