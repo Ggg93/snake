@@ -69,48 +69,39 @@ public class BoardController {
         // calc next position
         switch (direction) {
             case NORTH:
-                // south edge
-                if (y.equals(squareSideLength - 1)) {
-                    y = 0;
-                    // north edge
-                } else if (y.equals(0)) {
+                // north edge
+                if (y.equals(0)) {
                     y = squareSideLength - 1;
+                } else {
+                    // regular step:
+                    y--;
                 }
-                // regular step:
-                y--;
                 break;
             case SOUTH:
                 // south edge
                 if (y.equals(squareSideLength - 1)) {
                     y = 0;
-                    // north edge
-                } else if (y.equals(0)) {
-                    y = squareSideLength - 1;
+                } else {
+                    // regular step:
+                    y++;
                 }
-                // regular step:
-                y++;
                 break;
             case EAST:
                 // east edge
                 if (x.equals(squareSideLength - 1)) {
                     x = 0;
-                    // west edge
-                } else if (x.equals(0)) {
-                    x = squareSideLength - 1;
+                } else {
+                    // regular step:
+                    x++;
                 }
-                // regular step:
-                x++;
                 break;
             case WEST:
-                // east edge
-                if (x.equals(squareSideLength - 1)) {
-                    x = 0;
-                    // west edge
-                } else if (x.equals(0)) {
+                if (x.equals(0)) {
                     x = squareSideLength - 1;
+                } else {
+                    // regular step:
+                    x--;
                 }
-                // regular step:
-                x--;
                 break;
         }
 
