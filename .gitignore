@@ -1,0 +1,9 @@
+# OS generated files #
+######################
+desktop.ini
+
+# project files #
+######################
+/target/
+nbactions.xml
+# sudoku_db*
