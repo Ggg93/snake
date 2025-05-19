@@ -1,8 +1,10 @@
 package dev.gl.snake.views;
 
 import dev.gl.snake.controllers.BoardController;
+import dev.gl.snake.controllers.ScoreController;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -11,6 +13,7 @@ import java.util.Map;
 public class MainWindow extends javax.swing.JFrame {
 
     private BoardController boardController;
+    private ScoreController scoreController;
     private Map<BoardPosition, BoardCell> cells = new HashMap<>();
 
     public MainWindow() {
@@ -20,7 +23,24 @@ public class MainWindow extends javax.swing.JFrame {
         boardController.setSnakeOnBoard(3);
         boardController.updateSnakePositionOnBoard();
         boardController.setAppleOnBoard();
+        
+        scoreController = new ScoreController(this, 5);
         this.setLocationRelativeTo(null);
+    }
+    
+    public void showWinDialog() {
+        JOptionPane.showMessageDialog(this, "Congratulations!" + System.lineSeparator() + "You've won!", "VICTORY!", JOptionPane.OK_OPTION);
+        // clear the board and get ready for the next game...
+    }
+    
+    public void showLosingDialog() {
+        JOptionPane.showMessageDialog(this, "Sorry..." + System.lineSeparator() + "You've lost =(", "DEFEAT", JOptionPane.OK_OPTION);
+        // clear the board and get ready for the next game...
+    }
+    
+    public void updateInfoPanel(String score, String level) {
+        scoreTextField.setText(score);
+        levelTextField.setText(level);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,16 +119,4 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
-//    private void loadBoard() {
-//        cells = new HashMap<>();
-//        
-//        for (int r = 0; r < 25; r++) {
-//            for (int c = 0; c < 25; c++) {
-//                BoardCell cell = new BoardCell(r, c);
-//                mainPanel.add(cell);
-//                
-//                cells.put(cell.getBoardPosition(), cell);
-//            }
-//        }
-//    }
 }
