@@ -66,6 +66,7 @@ public class BoardController {
             isCellFree = !occupiedCells.contains(pos);
         }
         
+        applePosition = pos;
         cells.get(pos).setApple();
     }
     
