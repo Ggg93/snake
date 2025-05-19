@@ -27,11 +27,11 @@ public class BoardController {
     private ScoreController scoreController;
     private BoardPosition applePosition;
 
-    public BoardController(int squareSideLength, Map<BoardPosition, BoardCell> cells, MainWindow mainWindow) {
+    public BoardController(int squareSideLength, MainWindow mainWindow) {
         this.squareSideLength = squareSideLength;
-        this.cells = cells;
         this.mainWindow = mainWindow;
 
+        cells = new HashMap<>();
         positions = new HashMap<>();
     }
 

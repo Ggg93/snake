@@ -8,8 +8,6 @@ import dev.gl.snake.controllers.StartButtonListener;
 import dev.gl.snake.enums.MainWindowState;
 import dev.gl.snake.enums.MovementDirection;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -25,7 +23,6 @@ public class MainWindow extends javax.swing.JFrame {
     private BoardController boardController;
     private SnakeController snakeController;
     private ScoreController scoreController;
-    private Map<BoardPosition, BoardCell> cells = new HashMap<>();
     
     private StartButtonListener startButtonListener;
     private MainWindowState mainWindowState;
@@ -37,15 +34,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         scoreController = new ScoreController(this, 5);
         snakeController = new SnakeController();
-        boardController = new BoardController(25, cells, this);
+        boardController = new BoardController(25, this);
         boardController.loadBoard(mainPanel);
         boardController.setSnakeController(snakeController);
         boardController.setScoreController(scoreController);
         boardController.setSnakeOnBoard(3);
         boardController.updateSnakePositionOnBoard();
         boardController.setAppleOnBoard();
-
-        
 
         initActionListeners();
         createKeyBindings();

@@ -2,7 +2,6 @@ package dev.gl.snake.models;
 
 import dev.gl.snake.controllers.BoardController;
 import dev.gl.snake.controllers.ScoreController;
-import dev.gl.snake.controllers.SnakeController;
 import java.util.concurrent.TimeUnit;
 
 /**
