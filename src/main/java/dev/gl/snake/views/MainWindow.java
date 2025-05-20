@@ -6,9 +6,11 @@ import dev.gl.snake.listeners.KeyboardArrowsListener;
 import dev.gl.snake.listeners.StartButtonListener;
 import dev.gl.snake.enums.MainWindowState;
 import dev.gl.snake.enums.MovementDirection;
+import dev.gl.snake.listeners.AboutDialogActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -35,8 +37,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         initActionListeners();
         createKeyBindings();
-        mainPanel.requestFocus(); // it helps detects key presses
-        this.setLocationRelativeTo(null);
+        
+        initMenuItems();
+        setupThisWindow();
     }
 
     public void showWinDialog() {
@@ -68,6 +71,10 @@ public class MainWindow extends javax.swing.JFrame {
         rightInfoPanel = new javax.swing.JPanel();
         levelLabel = new javax.swing.JLabel();
         levelTextField = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        mainMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Snake");
@@ -113,8 +120,32 @@ public class MainWindow extends javax.swing.JFrame {
 
         getContentPane().add(infoPanel, java.awt.BorderLayout.NORTH);
 
+        mainMenu.setText("Main");
+
+        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        aboutMenuItem.setText("About");
+        mainMenu.add(aboutMenuItem);
+
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        mainMenu.add(exitMenuItem);
+
+        jMenuBar1.add(mainMenu);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        this.dispose();
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void initActionListeners() {
         startButton.addActionListener(new StartButtonListener(newGameController.getSnakeController(), this));
@@ -152,11 +183,15 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JPanel controlsPanel;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel leftInfoPanel;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JTextField levelTextField;
+    private javax.swing.JMenu mainMenu;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel rightInfoPanel;
     private javax.swing.JLabel scoreLabel;
@@ -166,6 +201,22 @@ public class MainWindow extends javax.swing.JFrame {
 
     public MainWindowState getMainWindowState() {
         return mainWindowState;
+    }
+    
+    private void initMenuItems() {
+        aboutMenuItem.addActionListener(new AboutDialogActionListener(this));
+    }
+
+    private void setupThisWindow() {
+        // set window icon
+        ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-snake-40.png"));
+        this.setIconImage(icon.getImage());
+        
+        // it helps detects key presses
+        mainPanel.requestFocus(); 
+        
+        // place window in the middle of the screen
+        this.setLocationRelativeTo(null);
     }
 
 }
