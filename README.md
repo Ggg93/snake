@@ -10,6 +10,10 @@ Main window:<br/>
 
 - 1.0.0: 20.05.2025. // Stable version
 
+## Credentials
+
+- Snake image: <a target="_blank" href="">Snake</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 ## Known issues
 
 
