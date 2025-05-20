@@ -29,7 +29,7 @@ public class MainWindow extends javax.swing.JFrame {
         this.newGameController = newGameController;
         initComponents();
         newGameController.linkMainWindowToControllers(this);
-        
+
         mainWindowState = MainWindowState.IDLE;
 
         newGameController.getBoardController().loadBoard(mainPanel);
@@ -37,13 +37,17 @@ public class MainWindow extends javax.swing.JFrame {
 
         initActionListeners();
         createKeyBindings();
-        
+
         initMenuItems();
         setupThisWindow();
     }
 
     public void showWinDialog() {
-        JOptionPane.showMessageDialog(this, "Congratulations!" + System.lineSeparator() + "You've won!", "VICTORY!", JOptionPane.OK_OPTION);
+        JOptionPane.showMessageDialog(this,
+                "Congratulations!"
+                + System.lineSeparator()
+                + "You've won!", "VICTORY!",
+                JOptionPane.INFORMATION_MESSAGE);
         newGameController.prepareNewGame(this);
     }
 
@@ -150,7 +154,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initActionListeners() {
         startButton.addActionListener(new StartButtonListener(newGameController.getSnakeController(), this));
     }
-    
+
     private void createKeyBindings() {
         InputMap inputMap = this.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap actionMap = this.getRootPane().getActionMap();
@@ -160,7 +164,7 @@ public class MainWindow extends javax.swing.JFrame {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "east");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "south");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "west");
-        
+
         SnakeController snakeController = newGameController.getSnakeController();
         actionMap.put("start", (AbstractAction) startButton.getActionListeners()[0]);
         actionMap.put("north", new KeyboardArrowsListener(snakeController, MovementDirection.NORTH, this));
@@ -168,10 +172,10 @@ public class MainWindow extends javax.swing.JFrame {
         actionMap.put("south", new KeyboardArrowsListener(snakeController, MovementDirection.SOUTH, this));
         actionMap.put("west", new KeyboardArrowsListener(snakeController, MovementDirection.WEST, this));
     }
-    
+
     public void changeMainWindowState(MainWindowState newState) {
         mainWindowState = newState;
-        
+
         switch (newState) {
             case PLAYING:
                 startButton.setEnabled(false);
@@ -202,7 +206,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindowState getMainWindowState() {
         return mainWindowState;
     }
-    
+
     private void initMenuItems() {
         aboutMenuItem.addActionListener(new AboutDialogActionListener(this));
     }
@@ -211,10 +215,10 @@ public class MainWindow extends javax.swing.JFrame {
         // set window icon
         ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-snake-40.png"));
         this.setIconImage(icon.getImage());
-        
+
         // it helps detects key presses
-        mainPanel.requestFocus(); 
-        
+        mainPanel.requestFocus();
+
         // place window in the middle of the screen
         this.setLocationRelativeTo(null);
     }
