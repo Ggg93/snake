@@ -1,7 +1,7 @@
 ## About Snake
 
 The classic 'Snake' game based on Java Swing GUI library. The game controlled by the keyboard arrows.<br>
-The game has its logical end: there are 15 levels, and speed increased on each level. After you collect 5 apples on level 15, you will win! :)
+The game has an ending: there are 15 levels, and speed increases with each level. After you collect 5 apples on level 15, you will win! :)
 
 Main window:<br/>
 <img src="/src/main/resources/images/screenshots/mainWindow.png" width="324" height="324"><br>
