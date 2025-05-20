@@ -1,6 +1,6 @@
 ## About Snake
 
-The classic 'Snake' game based on Java Swing GUI library.
+The classic 'Snake' game based on Java Swing GUI library. The game controlled by the keyboard arrows.
 
 Main window:<br/>
 <img src="/src/main/resources/images/screenshots/mainWindow.png" width="324" height="324">
