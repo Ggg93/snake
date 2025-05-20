@@ -1,13 +1,12 @@
 package dev.gl.snake.views;
 
-import dev.gl.snake.controllers.BoardController;
+import dev.gl.snake.controllers.NewGameController;
 import dev.gl.snake.listeners.KeyboardArrowsListener;
-import dev.gl.snake.controllers.ScoreController;
-import dev.gl.snake.controllers.SnakeController;
 import dev.gl.snake.listeners.StartButtonListener;
 import dev.gl.snake.enums.MainWindowState;
 import dev.gl.snake.enums.MovementDirection;
 import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -20,30 +19,18 @@ import javax.swing.KeyStroke;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private BoardController boardController;
-    private SnakeController snakeController;
-    private ScoreController scoreController;
-    
-    private StartButtonListener startButtonListener;
+    private NewGameController newGameController;
     private MainWindowState mainWindowState;
 
-    public MainWindow() {
+    public MainWindow(NewGameController newGameController) {
+        this.newGameController = newGameController;
         initComponents();
+        newGameController.linkMainWindowToControllers(this);
         
         mainWindowState = MainWindowState.IDLE;
 
-        scoreController = new ScoreController(this, 5);
-        boardController = new BoardController(25, this);
-        snakeController = new SnakeController();
-        boardController.loadBoard(mainPanel);
-        boardController.setSnakeController(snakeController);
-        boardController.setScoreController(scoreController);
-        scoreController.setSnakeController(snakeController);
-        snakeController.setBoardController(boardController);
-        snakeController.setScoreController(scoreController);
-        boardController.setSnakeOnBoard(3);
-        boardController.updateSnakePositionOnBoard();
-        boardController.setAppleOnBoard();
+        newGameController.getBoardController().loadBoard(mainPanel);
+        newGameController.getSnakeController().createNewSnake();
 
         initActionListeners();
         createKeyBindings();
@@ -129,8 +116,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initActionListeners() {
-        startButtonListener = new StartButtonListener(snakeController, this);
-        startButton.addActionListener(startButtonListener);
+        startButton.addActionListener(new StartButtonListener(newGameController.getSnakeController(), this));
     }
     
     private void createKeyBindings() {
@@ -143,11 +129,11 @@ public class MainWindow extends javax.swing.JFrame {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "south");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "west");
         
-        actionMap.put("start", startButtonListener);
-        actionMap.put("north", new KeyboardArrowsListener(snakeController, MovementDirection.NORTH));
-        actionMap.put("east", new KeyboardArrowsListener(snakeController, MovementDirection.EAST));
-        actionMap.put("south", new KeyboardArrowsListener(snakeController, MovementDirection.SOUTH));
-        actionMap.put("west", new KeyboardArrowsListener(snakeController, MovementDirection.WEST));
+        actionMap.put("start", (AbstractAction) startButton.getActionListeners()[0]);
+        actionMap.put("north", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.NORTH));
+        actionMap.put("east", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.EAST));
+        actionMap.put("south", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.SOUTH));
+        actionMap.put("west", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.WEST));
     }
     
     public void changeMainWindowState(MainWindowState newState) {

@@ -17,12 +17,18 @@ import java.util.concurrent.Executors;
 public class SnakeController {
     private SnakeModel snakeModel;
     private SnakeMovementTask movementProcess;
+    private Integer initialSnakeLength;
     
     private BoardController boardController;
     private ScoreController scoreController;
 
-    public void initSnakeModel(int initialLength, BoardPosition startPosition) {
-        snakeModel = new SnakeModel(initialLength, startPosition);
+    public SnakeController(Integer initialSnakeLength) {
+        this.initialSnakeLength = initialSnakeLength;
+    }
+    
+    public void createNewSnake() {
+        snakeModel = new SnakeModel(initialSnakeLength, boardController.getMiddleOfBoard());
+        boardController.placeNewSnakeOnBoard(snakeModel.getLocation());
     }
     
     public List<BoardPosition> getSnakePosition() {

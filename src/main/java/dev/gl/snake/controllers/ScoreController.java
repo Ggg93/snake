@@ -11,13 +11,10 @@ import dev.gl.snake.views.MainWindow;
 public class ScoreController {
     
     private final ScoreModel model;
-    private final MainWindow mainWindow;
+    private MainWindow mainWindow;
     private SnakeController snakeController;
 
-    public ScoreController(MainWindow mainWindow, 
-            int applesRequiredToNextLevel) {
-        
-        this.mainWindow = mainWindow;
+    public ScoreController(int applesRequiredToNextLevel) {
         model = new ScoreModel(applesRequiredToNextLevel, this);
     }
     
@@ -47,6 +44,10 @@ public class ScoreController {
 
     public void setSnakeController(SnakeController snakeController) {
         this.snakeController = snakeController;
+    }
+
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
     }
     
 }

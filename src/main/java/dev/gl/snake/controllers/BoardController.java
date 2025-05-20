@@ -27,9 +27,8 @@ public class BoardController {
     private ScoreController scoreController;
     private BoardPosition applePosition;
 
-    public BoardController(int squareSideLength, MainWindow mainWindow) {
+    public BoardController(int squareSideLength) {
         this.squareSideLength = squareSideLength;
-        this.mainWindow = mainWindow;
 
         cells = new HashMap<>();
         positions = new HashMap<>();
@@ -51,10 +50,6 @@ public class BoardController {
                 positions.put(r, rowMap);
             }
         }
-    }
-
-    public void setSnakeOnBoard(int snakeLength) {
-        snakeController.initSnakeModel(snakeLength, getMiddleOfBoard());
     }
 
     public void moveSnake() {
@@ -116,6 +111,7 @@ public class BoardController {
             boolean doesSnakeBiteItself = snakeController.getOccupiedCells().contains(head);
             if (doesSnakeBiteItself) {
                 mainWindow.showLosingDialog();
+                return;
             }
 
             // clear cell where the tail was
@@ -131,7 +127,6 @@ public class BoardController {
             scoreController.countEatenApple();
             setAppleOnBoard();
         }
-
     }
 
     public void setSnakeController(SnakeController snakeController) {
@@ -142,7 +137,7 @@ public class BoardController {
         this.scoreController = scoreController;
     }
 
-    public void setAppleOnBoard() {
+    private void setAppleOnBoard() {
         // if apple position is changes, then clear old cell
         if (applePosition != null) {
             BoardCell previousApple = cells.get(applePosition);
@@ -166,8 +161,13 @@ public class BoardController {
         cells.get(pos).setApple();
     }
 
-    public void updateSnakePositionOnBoard() {
-        List<BoardPosition> snakePosition = snakeController.getSnakePosition();
+    public void placeNewSnakeOnBoard(List<BoardPosition> snakePosition) {
+        // clean the field
+        for (BoardCell cell : cells.values()) {
+            cell.setEmpty();
+        }
+        
+        // put new snake on board
         for (int i = 0; i < snakePosition.size(); i++) {
             BoardPosition pos = snakePosition.get(i);
             BoardCell cell = cells.get(pos);
@@ -177,10 +177,13 @@ public class BoardController {
                 cell.setSnakeBody();
             }
         }
-
+        
+        // place apple on board
+        applePosition = null;
+        setAppleOnBoard();
     }
 
-    private BoardPosition getMiddleOfBoard() {
+    public BoardPosition getMiddleOfBoard() {
         int x = squareSideLength / 2;
         int y = squareSideLength / 2;
         return getBoardPositionByCoordinates(x, y);
@@ -192,4 +195,8 @@ public class BoardController {
         return pos;
     }
 
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+    
 }
