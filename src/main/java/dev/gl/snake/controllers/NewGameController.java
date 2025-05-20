@@ -1,5 +1,6 @@
 package dev.gl.snake.controllers;
 
+import dev.gl.snake.enums.MainWindowState;
 import dev.gl.snake.views.MainWindow;
 
 /**
@@ -26,6 +27,13 @@ public class NewGameController {
     public void linkMainWindowToControllers(MainWindow mw) {
         scoreController.setMainWindow(mw);
         boardController.setMainWindow(mw);
+    }
+    
+    public void prepareNewGame(MainWindow mw) {
+        scoreController.clearScoreModel();
+        snakeController.stopMovement();
+        snakeController.createNewSnake();
+        mw.changeMainWindowState(MainWindowState.IDLE);
     }
 
     public BoardController getBoardController() {

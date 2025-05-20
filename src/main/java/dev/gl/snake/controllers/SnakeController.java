@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class SnakeController {
     private SnakeModel snakeModel;
+    private ExecutorService service;
     private SnakeMovementTask movementProcess;
     private Integer initialSnakeLength;
     
@@ -24,6 +25,7 @@ public class SnakeController {
 
     public SnakeController(Integer initialSnakeLength) {
         this.initialSnakeLength = initialSnakeLength;
+        service = Executors.newSingleThreadExecutor();
     }
     
     public void createNewSnake() {
@@ -40,8 +42,21 @@ public class SnakeController {
     }
     
     public void changeSnakeDirection(MovementDirection direction) {
+        MovementDirection currentDirection = snakeModel.getDirection();
+        if (currentDirection == MovementDirection.SOUTH && direction == MovementDirection.NORTH) {
+            return;
+        }
+        if (currentDirection == MovementDirection.NORTH && direction == MovementDirection.SOUTH) {
+            return;
+        }
+        if (currentDirection == MovementDirection.WEST && direction == MovementDirection.EAST) {
+            return;
+        }
+        if (currentDirection == MovementDirection.EAST && direction == MovementDirection.WEST) {
+            return;
+        }
         System.out.println("new direction: " + direction);
-        snakeModel.setDirection(direction);
+        movementProcess.setNewDirection(direction);
     }
     
     public MovementDirection getDirection() {
@@ -49,10 +64,13 @@ public class SnakeController {
     }
     
     public void startMovement() {
-        ExecutorService service = Executors.newSingleThreadExecutor();
         movementProcess = new SnakeMovementTask(this, 
                 scoreController.getCurrentLevel().getSpeed());
         service.execute(movementProcess);
+    }
+    
+    public void stopMovement() {
+        movementProcess.stop();
     }
 
     public BoardPosition pullUpTail() {
@@ -68,7 +86,10 @@ public class SnakeController {
         movementProcess.setSpeed(speed);
     }
     
-    public void moveSnakeOnBoard() {
+    public void moveSnakeOnBoard(MovementDirection direction) {
+        if (direction != null) {
+            snakeModel.setDirection(direction);
+        }
         boardController.moveSnake();
     }
 

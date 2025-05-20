@@ -19,10 +19,7 @@ public class ScoreModel {
         this.applesRequiredToNextLevel = applesRequiredToNextLevel;
         this.controller = controller;
         
-        currentLevel = Levels.ONE;
-        score = 0;
-        eatenApplesOnCurrentLevel = 0;
-        
+        clearModel();
     }
 
     /**
@@ -54,6 +51,12 @@ public class ScoreModel {
 
     public Integer getScore() {
         return score;
+    }
+
+    public void clearModel() {
+        currentLevel = Levels.ONE;
+        score = 0;
+        eatenApplesOnCurrentLevel = 0;
     }
 
 }

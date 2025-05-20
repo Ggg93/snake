@@ -38,6 +38,11 @@ public class ScoreController {
         mainWindow.showWinDialog();
     }
     
+    public void clearScoreModel() {
+        model.clearModel();
+        updateMainWindowInfoPanel();
+    }
+    
     public Levels getCurrentLevel() {
         return model.getCurrentLevel();
     }

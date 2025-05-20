@@ -1,6 +1,7 @@
 package dev.gl.snake.views;
 
 import dev.gl.snake.controllers.NewGameController;
+import dev.gl.snake.controllers.SnakeController;
 import dev.gl.snake.listeners.KeyboardArrowsListener;
 import dev.gl.snake.listeners.StartButtonListener;
 import dev.gl.snake.enums.MainWindowState;
@@ -40,12 +41,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void showWinDialog() {
         JOptionPane.showMessageDialog(this, "Congratulations!" + System.lineSeparator() + "You've won!", "VICTORY!", JOptionPane.OK_OPTION);
-        // clear the board and get ready for the next game...
+        newGameController.prepareNewGame(this);
     }
 
     public void showLosingDialog() {
         JOptionPane.showMessageDialog(this, "Sorry..." + System.lineSeparator() + "You've lost =(", "DEFEAT", JOptionPane.OK_OPTION);
-        // clear the board and get ready for the next game...
+        newGameController.prepareNewGame(this);
     }
 
     public void updateInfoPanel(String score, String level) {
@@ -129,11 +130,12 @@ public class MainWindow extends javax.swing.JFrame {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "south");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "west");
         
+        SnakeController snakeController = newGameController.getSnakeController();
         actionMap.put("start", (AbstractAction) startButton.getActionListeners()[0]);
-        actionMap.put("north", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.NORTH));
-        actionMap.put("east", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.EAST));
-        actionMap.put("south", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.SOUTH));
-        actionMap.put("west", new KeyboardArrowsListener(newGameController.getSnakeController(), MovementDirection.WEST));
+        actionMap.put("north", new KeyboardArrowsListener(snakeController, MovementDirection.NORTH, this));
+        actionMap.put("east", new KeyboardArrowsListener(snakeController, MovementDirection.EAST, this));
+        actionMap.put("south", new KeyboardArrowsListener(snakeController, MovementDirection.SOUTH, this));
+        actionMap.put("west", new KeyboardArrowsListener(snakeController, MovementDirection.WEST, this));
     }
     
     public void changeMainWindowState(MainWindowState newState) {
